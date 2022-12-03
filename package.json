@@ -1,6 +1,6 @@
 {
   "name": "repl-ns",
-  "version": "0.0.0",
+  "version": "0.0.15",
   "description": "Namespace for REPL driven development",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
