@@ -10,7 +10,7 @@ export const ns = <T extends object>(
     rewriteKeys: string[]
   } = { forceRewrite: false, rewriteKeys: [], async before() {}, async after() {} }
 ) => {
-  ;(async () => {
+  const ready = (async () => {
     await opts.before(namespaces[name] as T)
 
     const rewriteKeysIdx = opts.rewriteKeys.reduce((acc, k) => ({ ...acc, [k]: true }), {} as Record<string, boolean>)
@@ -24,5 +24,5 @@ export const ns = <T extends object>(
     await opts.after(namespaces[name] as T)
   })()
 
-  return () => namespaces[name] as T
+  return Object.assign(() => namespaces[name] as T, { ready })
 }
