@@ -2,13 +2,13 @@ const namespaces: Record<string, object> = {}
 
 export const ns = async <T extends object>(
   name: string,
+  props: T,
   opts: {
     before: (props?: T) => Promise<unknown>
     after: (props: T) => Promise<unknown>
     forceRewrite: boolean
     rewriteKeys: string[]
-  } = { forceRewrite: false, rewriteKeys: [], async before() {}, async after() {} },
-  props: T
+  } = { forceRewrite: false, rewriteKeys: [], async before() {}, async after() {} }
 ) => {
   await opts.before(namespaces[name] as T)
 
