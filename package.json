@@ -10,6 +10,10 @@
     "prepublishOnly": "npm run build",
     "test": "npm run build && node --test dist/test.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/darky/repl-ns.git"
+  },
   "files": [
     "dist/index.js",
     "dist/index.d.ts"
