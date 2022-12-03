@@ -3,7 +3,7 @@ const namespaces: Record<string, Record<string, unknown>> = {}
 export const ns = <T extends object>(
   name: string,
   props: T,
-  opts?: {
+  options?: {
     before?: (props?: T) => Promise<unknown>
     after?: (props: T) => Promise<unknown>
     forceRewrite?: boolean
@@ -11,23 +11,27 @@ export const ns = <T extends object>(
   }
 ) => {
   const ready = (async () => {
-    await opts?.before?.(namespaces[name] as T)
+    await options?.before?.(namespaces[name] as T)
 
-    const rewriteKeysIdx =
-      opts?.rewriteKeys?.reduce((acc, k) => ({ ...acc, [k]: true }), {} as Record<string, boolean>) ?? {}
+    const rewriteKeysIdx: Record<string, boolean> = {}
+    options?.rewriteKeys?.forEach(k => (rewriteKeysIdx[k as string] = true))
     namespaces[name] ??= {}
 
     await Promise.resolve(props)
       .then(p => Object.entries(p))
       .then(es =>
         es.filter(
-          ([k, v]) => opts?.forceRewrite || rewriteKeysIdx[k] || typeof v === 'function' || namespaces[name]![k] == null
+          ([key, value]) =>
+            options?.forceRewrite ||
+            rewriteKeysIdx[key] ||
+            typeof value === 'function' ||
+            namespaces[name]![key] == null
         )
       )
       .then(es => Object.fromEntries(es))
       .then(p => Object.assign(namespaces[name]!, p))
 
-    await opts?.after?.(namespaces[name] as T)
+    await options?.after?.(namespaces[name] as T)
   })()
 
   return Object.assign(() => namespaces[name] as T, { ready })
