@@ -7,7 +7,7 @@ export const ns = <T extends object>(
     before?: (props?: T) => Promise<unknown>
     after?: (props: T) => Promise<unknown>
     forceRewrite?: boolean
-    rewriteKeys?: string[]
+    rewriteKeys?: (keyof T)[]
   }
 ) => {
   const ready = (async () => {
