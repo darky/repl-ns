@@ -1,0 +1,23 @@
+{
+  "name": "repl-ns",
+  "version": "0.0.0",
+  "description": "Namespace for REPL driven development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "repl",
+    "clojure",
+    "ts",
+    "typescript",
+    "driven",
+    "development"
+  ],
+  "author": "Vladislav Botvin",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "2.8.0",
+    "typescript": "4.9.3"
+  }
+}
