@@ -9,9 +9,9 @@ Currently tested on Node.js, but potentially can be used on any JavaScript runti
 *TL;DR Because it fastest, glad and fun way to develop software. Clojure guys approve it*
 
 Node.js development process evolved gradually. At the beginning was nothing, and developers restarted node.js from scratch manually for code testing.
-Then some automation appears [nodemon](https://nodemon.io/). Fine! Now I can relax from bored `Ctrl+C` -> `UP` -> `Enter` process. But it's not enough! Restarting node.js process from scratch is very expensive! 
+Then some automation appears [nodemon](https://nodemon.io/). Fine! Now I can relax from boring `Ctrl+C` -> `UP` -> `Enter` process. But it's not enough! Restarting node.js process from scratch is very expensive! 
 * Need to require in runtime all project files. Yes! All this hundreds files of your 3+ years old monolith 😊
-* Seems you have TypeScript too. Need to transpile all this kind with additional time wasting (Yeah! Say hello to ts-node perf tweak and all new TypeScript compilers, which written on Rust/C++ 😀)
+* Seems you have TypeScript too. Need to transpile all this kind with additional time wasting (Yeah! Say hello to ts-node perf tweak and all new TypeScript compilers, which written on Rust/C++/Go 😀)
 * And establish DB connection too
 * And establish Kafka/RabbitMQ/SQS connection too
 * And establish Redis connection too
@@ -60,9 +60,34 @@ BTW, setup IDE for REPL driven development [VSCode example](https://github.com/d
 
 Awesome! 🦄 Now fastest REPL driven development with node.js at your fingertips 
 
-### More examples
+### Detailed example
 
-See [tests](https://github.com/darky/repl-ns/blob/master/test.ts)
+```ts
+import { ns } from 'repl-ns';
+
+export const someNS = ns('some-namespace', {
+  fn() {
+    return 1 + 1 // functions always will be replaced in REPL
+  },
+  
+  obj: {foo: 'bar'} // objects will be preserved in REPL by default (for stateful)
+}, {
+  forceRewrite: true, // if you want force replace objects too, this option will be helpful
+  rewriteKeys: ['obj'], // or you can pick specific items for replacing
+  async before(props) {
+    // optional before hook namespace initialization
+    // old namespace payload will be passed in props (if exists)
+    // here you can close DB connection, stop HTTP server and so on
+  },
+  async after(props) {
+    // optional after hook namespace initialization
+    // new namespace payload will be passed in props
+    // here you can establish DB connection, start HTTP server and so on
+  },
+});
+
+await someNS.ready // promise for ready state of namespace (before, after hooks executed yet)
+```
 
 ### Real projects used repl-ns
 
