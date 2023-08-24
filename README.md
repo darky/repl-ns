@@ -84,6 +84,7 @@ export const someNS = ns('some-namespace', {
     // new namespace payload will be passed in props
     // here you can establish DB connection, start HTTP server and so on
   },
+  sync: true // pass sync: true if your namespace has totally sync behaviour
 });
 
 await someNS.ready // promise for ready state of namespace (before, after hooks executed yet)
